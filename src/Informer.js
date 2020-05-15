@@ -1,35 +1,26 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { Table } from './Table'
+import { GridTable } from './GridTable'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
 
 const Styles = styled.div`
     padding: 1rem;
+    
+    .boxed {
+        display: inline-block;
+        border: 5px solid green;
+        border-radius: 10px;
+        background: #D3D3D3;
+    }
 
-    table {
-        border-spacing: 0;
-        border: 1px solid black;
+    .container {
+        text-align: center;
+        vertical-align: center;
+    }
 
-        tr {
-            :last-child {
-                td {
-                    border-bottom: 0;
-                }
-            }
-        }
-
-        th,
-        td {
-            margin: 0;
-            padding: 0.5rem;
-            border-bottom: 1px solid black;
-            border-right: 1px solid black;
-
-            :last-child {
-                border-right: 0;
-            }
-        }
+    .clearfix {
+        overflow: auto;
     }
 `
 
@@ -54,10 +45,6 @@ export const Informer = () => {
                 Header: 'name',
                 accessor: 'name',
             },
-            {
-                Header: 'description',
-                accessor: 'description',
-            },
         ],
         []
     )
@@ -70,11 +57,12 @@ export const Informer = () => {
             <Styles>
                 { usersLoading ?
                     <b>Loading users...</b> :
-                    <Table columns={usersColumns} data={usersData.users}/>
+                    <GridTable columns={usersColumns} data={usersData.users}/>
                 }
+                <p/>
                 { projectsLoading ?
                     <b>Loading projects...</b> :
-                    <Table columns={projectsColumns} data={projectsData.projects}/>
+                    <GridTable columns={projectsColumns} data={projectsData.projects}/>
                 }
             </Styles>
         </div>
@@ -85,7 +73,6 @@ const USERS = gql`
 {
     users {
         username
-        email
     }
 }
 `
@@ -94,7 +81,6 @@ const PROJECTS = gql`
 {
     projects {
         name
-        description
     }
 }
 `
